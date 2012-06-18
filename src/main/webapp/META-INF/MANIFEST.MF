@@ -1,0 +1,6 @@
+Manifest-Version: 1.0
+Dependencies: org.dom4j
+Build-Jdk: 1.7.0_05
+Built-By: nijhazer
+Created-By: Apache Maven
+

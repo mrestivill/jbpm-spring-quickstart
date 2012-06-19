@@ -15,6 +15,7 @@
         <version.hibernate.jpa2.api>1.0.1.Final</version.hibernate.jpa2.api>
         <version.mysql.connector>5.1.20</version.mysql.connector>
         <version.bitronix>2.1.3</version.bitronix>
+        <version.jstl>1.2</version.jstl>
 
         <!-- Spring version -->
         <version.spring>3.1.1.RELEASE</version.spring>
@@ -34,13 +35,7 @@
         <version.jboss.as.maven.plugin>7.1.1.Final</version.jboss.as.maven.plugin>
         
         <!-- jBPM: Business Process Management -->
-        <version.jbpm>5.4.0.SNAPSHOT</version.jbpm>
-        <!-- jBPM Human Tasks:
-             As of 2012-06-16, the official JBoss repository only contains
-             the 5.3.0.CR1 version of this JAR. 5.3.0.Final is available in POM
-             form only. Until this issue is resolved, the CR1 version is being 
-             used here. -->
-        <version.jbpm.human.task>5.3.0.CR1</version.jbpm.human.task>
+        <version.jbpm>5.4.0-SNAPSHOT</version.jbpm>
         
         <!-- Drools: Rules Engine -->
         <version.drools>5.4.0.Final</version.drools>
@@ -55,18 +50,10 @@
         
         <!-- SLF4J: Logging framework -->
         <version.slf4j>1.6.4</version.slf4j>
+        <version.log4j>1.2.14</version.log4j>
         
         <!-- JUnit (Unit Testing) -->
         <version.junit>4.8.2</version.junit>
-
-        <!-- DOM4J -->
-        <version.dom4j>1.6.1</version.dom4j>
-
-        <!-- JDOM -->
-        <version.jdom>1.0</version.jdom>
-
-        <!-- Javassist -->
-        <version.javassist>3.15.0-GA</version.javassist>
     </properties>
 
     <dependencyManagement>
@@ -76,12 +63,6 @@
                 <groupId>org.mortbay.jetty</groupId>
                 <artifactId>maven-jetty-plugin</artifactId>
                 <version>${version.jetty}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.codehaus.btm</groupId>
-                <artifactId>btm</artifactId>
-                <version>${version.bitronix}</version>
             </dependency>
 
             <dependency>
@@ -187,8 +168,8 @@
             </dependency>
             <dependency>
                 <groupId>org.jbpm</groupId>
-                <artifactId>jbpm-human-task</artifactId>
-                <version>${version.jbpm.human.task}</version>
+                <artifactId>jbpm-human-task-core</artifactId>
+                <version>${version.jbpm}</version>
             </dependency>
             <dependency>
                 <groupId>org.jbpm</groupId>
@@ -270,10 +251,11 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.codehaus.btm</groupId>
-            <artifactId>btm</artifactId>
-        </dependency>
-
+			<groupId>javax.servlet</groupId>
+			<artifactId>jstl</artifactId>
+			<version>${version.jstl}</version>
+		</dependency>
+		
         <dependency>
             <groupId>org.hibernate.javax.persistence</groupId>
             <artifactId>hibernate-jpa-2.0-api</artifactId>
@@ -408,7 +390,7 @@
         </dependency>
         <dependency>
               <groupId>org.jbpm</groupId>
-              <artifactId>jbpm-human-task</artifactId>
+              <artifactId>jbpm-human-task-core</artifactId>
         </dependency>
         <dependency>
               <groupId>org.jbpm</groupId>
@@ -466,12 +448,6 @@
               <groupId>com.google.protobuf</groupId>
               <artifactId>protobuf-java</artifactId>
         </dependency>
-
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-simple</artifactId>
-            <version>${version.slf4j}</version>
-        </dependency>
     </dependencies>
 
     <build>
@@ -505,12 +481,33 @@
                             <maxIdleTime>60000</maxIdleTime>
                         </connector>
                     </connectors>
+                    <systemProperties>
+                        <systemProperty>
+                            <name>log4j.configuration</name>
+                            <value>classpath:log4j.properties</value>
+                        </systemProperty>
+                    </systemProperties>
                 </configuration>
                 <dependencies>
                     <dependency>
                         <groupId>mysql</groupId>
                         <artifactId>mysql-connector-java</artifactId>
                         <version>${version.mysql.connector}</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.codehaus.btm</groupId>
+                        <artifactId>btm-jetty6-lifecycle</artifactId>
+                        <version>${version.bitronix}</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.slf4j</groupId>
+                        <artifactId>slf4j-log4j12</artifactId>
+                        <version>${version.slf4j}</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>log4j</groupId>
+                        <artifactId>log4j</artifactId>
+                        <version>${version.log4j}</version>
                     </dependency>
                 </dependencies>
                 <executions>

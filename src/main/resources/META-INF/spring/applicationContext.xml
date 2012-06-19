@@ -7,16 +7,20 @@
 	xmlns:jee="http://www.springframework.org/schema/jee"
 	xmlns:p="http://www.springframework.org/schema/p"
 	xmlns:tx="http://www.springframework.org/schema/tx"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
-		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
-		http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-3.0.xsd
-		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
+	xmlns:jbpm="http://drools.org/schema/drools-spring"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+	                    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+		                http://www.springframework.org/schema/context
+		                http://www.springframework.org/schema/context/spring-context-3.0.xsd
+		                http://www.springframework.org/schema/jee
+		                http://www.springframework.org/schema/jee/spring-jee-3.0.xsd
+		                http://www.springframework.org/schema/tx
+		                http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+		                http://drools.org/schema/drools-spring
+                        http://drools.org/schema/drools-spring.xsd">
 
-    <!--
-	<context:component-scan base-package="com.nijhazer.jbpm.spring.quickstart.domain"/>
-
-	<context:component-scan base-package="com.nijhazer.jbpm.spring.quickstart.repo"/>
-    -->
+    <tx:jta-transaction-manager />
+    
     <bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
         <property name="jndiName" value="jdbc/jbpmds"/>
     </bean>
@@ -32,15 +36,81 @@
         <property name="dataSource" ref="dataSource" />
         <property name="jpaVendorAdapter" ref="jpaVendorAdapter" />
     </bean>
+    
+    <bean id="systemEventListener" class="org.drools.SystemEventListenerFactory" factory-method="getSystemEventListener" />
 
-    <bean id="btmConfig" factory-method="getConfiguration" class="bitronix.tm.TransactionManagerServices" />
-
-    <bean id="bitronixTransactionManager" factory-method="getTransactionManager"
-          class="bitronix.tm.TransactionManagerServices" depends-on="btmConfig" destroy-method="shutdown" />
-
-    <bean id="transactionManager" class="org.springframework.transaction.jta.JtaTransactionManager">
-        <property name="transactionManager" ref="bitronixTransactionManager" />
-        <property name="userTransaction" ref="bitronixTransactionManager" />
+    <bean id="taskService" class="org.jbpm.task.service.TaskService" >
+        <property name="systemEventListener" ref="systemEventListener" />
     </bean>
 
+    <bean id="springTaskSessionFactory" class="org.jbpm.task.service.persistence.TaskSessionSpringFactoryImpl" scope="prototype">
+        <property name="entityManagerFactory" ref="entityManagerFactory" />
+        <property name="useJTA" value="true" />
+        <property name="taskService" ref="taskService" />
+    </bean>
+    
+    <bean id="taskServiceSetup" class="com.nijhazer.jbpm.quickstart.TaskServiceSetup" init-method="initialize">
+  	    <property name="taskService" ref="taskService" />
+  	    <property name="taskResources" ref="taskResourceFactory" />
+  	    <property name="roles" ref="listRoles" />
+  	    <property name="users" ref="listUsers" />
+    </bean>
+    
+    <bean id="taskResourceFactory" class="com.nijhazer.jbpm.quickstart.TaskResourceFactory">
+        <property name="taskService" ref="taskService" />
+        <property name="transactionManager" ref="transactionManager" />
+    </bean>
+    
+    <bean id="roleAdmin" class="com.nijhazer.jbpm.quickstart.model.AccountRole">
+        <constructor-arg type="java.lang.String" value="Administrator" />
+    </bean>
+    
+    <bean id="roleNormal" class="com.nijhazer.jbpm.quickstart.model.AccountRole">
+        <constructor-arg type="java.lang.String" value="Normal" />
+    </bean>
+    
+    <bean id="listRoles" class="java.util.ArrayList">
+        <constructor-arg>
+            <list>
+                <ref bean="roleAdmin" />
+                <ref bean="roleNormal" />
+            </list>
+        </constructor-arg>
+    </bean>
+    
+    <bean id="listUsers" class="java.util.ArrayList">
+        <constructor-arg>
+            <list>
+                <bean class="com.nijhazer.jbpm.quickstart.model.AccountUser">
+                    <constructor-arg type="java.lang.String" value="Administrator" />
+                    <constructor-arg type="com.nijhazer.jbpm.quickstart.model.AccountRole" ref="roleAdmin" />
+                </bean>
+                <bean class="com.nijhazer.jbpm.quickstart.model.AccountUser">
+                    <constructor-arg type="java.lang.String" value="NormalGuy" />
+                    <constructor-arg type="com.nijhazer.jbpm.quickstart.model.AccountRole" ref="roleNormal" />
+                </bean>
+            </list>
+        </constructor-arg>
+    </bean>
+    
+    <jbpm:kbase id="kbase">
+        <jbpm:resources>
+            <jbpm:resource source="classpath:bpmn/SampleHumanTaskProcess.bpmn" type="BPMN2"></jbpm:resource>
+        </jbpm:resources>
+    </jbpm:kbase>
+    
+    <bean id="ksessionFactory" class="com.getinsured.hix.workflow.KnowledgeSessionFactory">
+	    <property name="entityManagerFactory" ref="entityManagerFactory" />
+	    <property name="kbase" ref="kbase" />
+	    <property name="transactionManager" ref="transactionManager" />
+	    <property name="taskResources" ref="taskResourceFactory" />
+	</bean>
+	
+	<!-- Maps '/' requests to the 'home' view -->
+	<mvc:view-controller path="/" view-name="home"/>
+	
+	<bean id="handlerMapping" class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping"/>
+	
+	<!-- Component scan  -->
+	<context:component-scan base-package="com.nijhazer.jbpm.quickstart" />
 </beans>

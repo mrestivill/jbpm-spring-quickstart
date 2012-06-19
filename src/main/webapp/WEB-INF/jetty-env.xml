@@ -6,7 +6,7 @@
         <Arg>
             <New id="dataSource" class="bitronix.tm.resource.jdbc.PoolingDataSource">
                 <Set name="uniqueName">jbpmds</Set>
-                <Set name="className">com.mysql.jdbc.jdbc2.optional.MysqlDataSource</Set>
+                <Set name="className">com.mysql.jdbc.jdbc2.optional.MysqlXADataSource</Set>
                 <Set name="allowLocalTransactions">true</Set>
                 <Get name="driverProperties">
                     <Put name="user">jbpm</Put>

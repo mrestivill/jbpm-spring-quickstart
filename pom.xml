@@ -48,9 +48,9 @@
         <!-- Jackson: JSON Marshaling / Unmarshaling -->
         <version.jackson>1.9.3</version.jackson>
         
-        <!-- SLF4J: Logging framework -->
-        <version.slf4j>1.6.4</version.slf4j>
-        <version.log4j>1.2.14</version.log4j>
+        <!-- Logback + SLF4J: Logging Frameworks -->
+        <version.slf4j>1.6.5</version.slf4j>
+        <version.logback>1.0.6</version.logback>
         
         <!-- JUnit (Unit Testing) -->
         <version.junit>4.8.2</version.junit>
@@ -251,10 +251,27 @@
 
     <dependencies>
         <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${version.slf4j}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <version>${version.slf4j}</version>
+        </dependency>
+
+        <dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>jstl</artifactId>
 			<version>${version.jstl}</version>
 		</dependency>
+
+        <dependency>
+            <groupId>org.codehaus.btm</groupId>
+            <artifactId>btm</artifactId>
+            <version>${version.bitronix}</version>
+        </dependency>
 		
         <dependency>
             <groupId>org.hibernate.javax.persistence</groupId>
@@ -483,31 +500,36 @@
                     </connectors>
                     <systemProperties>
                         <systemProperty>
-                            <name>log4j.configuration</name>
-                            <value>classpath:log4j.properties</value>
+                            <name>logback.configurationFile</name>
+                            <value>${project.build.outputDirectory}/logback.xml</value>
                         </systemProperty>
                     </systemProperties>
                 </configuration>
                 <dependencies>
-                    <dependency>
-                        <groupId>mysql</groupId>
-                        <artifactId>mysql-connector-java</artifactId>
-                        <version>${version.mysql.connector}</version>
-                    </dependency>
                     <dependency>
                         <groupId>org.codehaus.btm</groupId>
                         <artifactId>btm-jetty6-lifecycle</artifactId>
                         <version>${version.bitronix}</version>
                     </dependency>
                     <dependency>
-                        <groupId>org.slf4j</groupId>
-                        <artifactId>slf4j-log4j12</artifactId>
-                        <version>${version.slf4j}</version>
+                        <groupId>mysql</groupId>
+                        <artifactId>mysql-connector-java</artifactId>
+                        <version>${version.mysql.connector}</version>
                     </dependency>
                     <dependency>
-                        <groupId>log4j</groupId>
-                        <artifactId>log4j</artifactId>
-                        <version>${version.log4j}</version>
+                        <groupId>ch.qos.logback</groupId>
+                        <artifactId>logback-core</artifactId>
+                        <version>${version.logback}</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>ch.qos.logback</groupId>
+                        <artifactId>logback-classic</artifactId>
+                        <version>${version.logback}</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.slf4j</groupId>
+                        <artifactId>slf4j-api</artifactId>
+                        <version>${version.slf4j}</version>
                     </dependency>
                 </dependencies>
                 <executions>

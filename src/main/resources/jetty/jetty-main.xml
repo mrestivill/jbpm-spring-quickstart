@@ -1,19 +1,18 @@
 <?xml version="1.0"?>
 <!DOCTYPE Configure PUBLIC "-//Mort Bay Consulting//DTD Configure//EN" "http://jetty.mortbay.org/configure.dtd">
-
-<Configure id="Server" class="org.mortbay.jetty.Server">
+<Configure id="Server" class="org.eclipse.jetty.server.Server">
     <Call name="getConfiguration" class="bitronix.tm.TransactionManagerServices">
         <Set name="serverId">jetty-btm-node0</Set>
-        <Set name="logPart1Filename"><SystemProperty name="jetty.home" default="." />./work/btm1.tlog</Set>
-        <Set name="logPart2Filename"><SystemProperty name="jetty.home" default="." />./work/btm2.tlog</Set>
+        <Set name="logPart1Filename"><SystemProperty name="jetty.home" default="." />btm1.tlog</Set>
+        <Set name="logPart2Filename"><SystemProperty name="jetty.home" default="." />btm2.tlog</Set>
     </Call>
     <Call name="addLifeCycle">
         <Arg>
-            <New class="bitronix.tm.integration.jetty6.BTMLifeCycle" />
+            <New class="bitronix.tm.integration.jetty7.BTMLifeCycle" />
         </Arg>
     </Call>
 
-    <New class="org.mortbay.jetty.plus.naming.Transaction">
+    <New class="org.eclipse.jetty.plus.jndi.Transaction">
         <Arg>
             <Call name="getTransactionManager" class="bitronix.tm.TransactionManagerServices" />
         </Arg>

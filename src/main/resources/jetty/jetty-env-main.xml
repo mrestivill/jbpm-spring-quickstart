@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!DOCTYPE Configure PUBLIC "-//Mort Bay Consulting//DTD Configure//EN" "http://jetty.mortbay.org/configure.dtd">
+<Configure class="org.eclipse.jetty.webapp.WebAppContext">
+    <New id="jbpmds" class="org.eclipse.jetty.plus.jndi.Resource">
+        <Arg>jdbc/jbpmspringds</Arg>
+        <Arg>
+            <New id="dataSource" class="bitronix.tm.resource.jdbc.PoolingDataSource">
+                <Set name="uniqueName">jbpmspringds</Set>
+                <Set name="className">com.mysql.jdbc.jdbc2.optional.MysqlXADataSource</Set>
+                <Set name="allowLocalTransactions">true</Set>
+                <Get name="driverProperties">
+                    <Put name="user">jbpm</Put>
+                    <Put name="password">jbpm</Put>
+                    <Put name="URL">jdbc:mysql://localhost:3306/jbpmspring</Put>
+                </Get>
+                <Set name="maxPoolSize">3</Set>
+                <Call name="init" />
+            </New>
+        </Arg>
+    </New>
+</Configure>

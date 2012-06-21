@@ -44,11 +44,7 @@ public class TaskServiceSetup {
 		
 		logger.debug("Retrieving a callback instance");
 		LocalUserGroupCallbackImpl callback = LocalUserGroupCallbackImpl.getInstance();
-		
-		/**
-		 * Because the callback will execute outside of the Spring container, we must provide
-		 * the necessary Spring Data repositories to it.
-		 */
+
 		callback.setRoles(roles);
 		callback.setUsers(users);
 		

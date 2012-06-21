@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class HomeController {
     private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 	
-    @RequestMapping(value="/account/adminHome",method = RequestMethod.GET)
+    @RequestMapping(value="/",method = RequestMethod.GET)
     public String getAdminHomePage(Model model) {
         logger.info("Rendering Home Page");
         model.addAttribute("page_title", "yeah");

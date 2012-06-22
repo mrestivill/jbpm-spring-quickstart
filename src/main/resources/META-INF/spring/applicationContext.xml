@@ -61,7 +61,7 @@
   	    <property name="users" ref="listUsers" />
     </bean>
     
-    <bean id="taskResourceFactory" class="com.nijhazer.jbpm.quickstart.TaskResourceFactory">
+    <bean id="taskClient" class="com.nijhazer.jbpm.quickstart.TaskResourceFactory" factory-method="getTaskClient">
         <property name="taskService" ref="taskService" />
         <property name="transactionManager" ref="transactionManager" />
     </bean>

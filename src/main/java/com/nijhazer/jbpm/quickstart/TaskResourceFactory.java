@@ -18,9 +18,7 @@ import org.springframework.transaction.support.AbstractPlatformTransactionManage
  */
 public class TaskResourceFactory implements ApplicationContextAware {
 	private static final Logger logger = LoggerFactory.getLogger(TaskResourceFactory.class);
-	private TaskService taskService;
-	private AbstractPlatformTransactionManager transactionManager;
-	private ApplicationContext context;
+	private static ApplicationContext context;
 
 	@Override
 	public void setApplicationContext(ApplicationContext applicationContext)
@@ -35,8 +33,8 @@ public class TaskResourceFactory implements ApplicationContextAware {
 	 * clients from within Spring MVC controllers.
 	 * @return LocalTaskService (client)
 	 */
-	public LocalTaskService getTaskClient() {
-		initializeSessionFactory();
+	public static LocalTaskService getTaskClient(TaskService taskService, AbstractPlatformTransactionManager transactionManager) {
+		initializeSessionFactory(transactionManager);
 		
 		logger.debug("Creating local task service client, based on {}", taskService);
 		LocalTaskService returnBean = new LocalTaskService(taskService);
@@ -45,7 +43,7 @@ public class TaskResourceFactory implements ApplicationContextAware {
 		return returnBean;
 	}
 	
-	public void initializeSessionFactory() {
+	public static void initializeSessionFactory(AbstractPlatformTransactionManager transactionManager) {
 		logger.debug("Initializing the session factory");
 		TaskSessionSpringFactoryImpl springFactory = (TaskSessionSpringFactoryImpl) context.getBean("springTaskSessionFactory");
 		
@@ -55,24 +53,6 @@ public class TaskResourceFactory implements ApplicationContextAware {
 		
 		logger.debug("Initializing");
 		springFactory.initialize();
-	}
-
-	public TaskService getTaskService() {
-		return taskService;
-	}
-
-	public void setTaskService(TaskService taskService) {
-		this.taskService = taskService;
-	}
-
-	public AbstractPlatformTransactionManager getTransactionManager() {
-		return transactionManager;
-	}
-
-	public void setTransactionManager(
-			AbstractPlatformTransactionManager transactionManager) {
-		logger.debug("Setting transaction manager: {}", transactionManager);
-		this.transactionManager = transactionManager;
 	}
 
 }

@@ -118,7 +118,7 @@ public class KnowledgeSessionFactory {
 		logger.debug("Creating a Human Task Handler");
 		SyncWSHumanTaskHandler handler = new SyncWSHumanTaskHandler();
 		handler.setLocal(true);
-		handler.setClient(taskResources.getTaskClient());
+		//handler.setClient(taskResources.getTaskClient());
 		return handler;
 	}
 	

@@ -40,7 +40,7 @@ public class TaskServiceSetup {
 		 * with a callback-- an object that will be used to lookup user and group information.
 		 */
 		logger.debug("Initializing session factory");
-		TaskResourceFactory.getTaskClient(taskService, transactionManager);
+		//TaskResourceFactory.getTaskClient(taskService, transactionManager);
 		
 		logger.debug("Retrieving a callback instance");
 		LocalUserGroupCallbackImpl callback = LocalUserGroupCallbackImpl.getInstance();

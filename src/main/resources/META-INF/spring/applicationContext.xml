@@ -55,8 +55,9 @@
     </bean>
     
     <bean id="taskServiceSetup" class="com.nijhazer.jbpm.quickstart.TaskServiceSetup" init-method="initialize">
+            <property name="transactionManager" ref="transactionManager"/>
   	    <property name="taskService" ref="taskService" />
-  	    <property name="taskResources" ref="taskResourceFactory" />
+  	    <property name="taskResources" ref="taskClient" />
   	    <property name="roles" ref="listRoles" />
   	    <property name="users" ref="listUsers" />
     </bean>

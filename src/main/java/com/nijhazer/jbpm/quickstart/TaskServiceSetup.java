@@ -22,9 +22,7 @@ import org.springframework.transaction.support.AbstractPlatformTransactionManage
 public class TaskServiceSetup {
 	private static final Logger logger = LoggerFactory.getLogger(TaskServiceSetup.class);
         
-        @Autowired
-        private AbstractPlatformTransactionManager transactionManager;
-	
+        private AbstractPlatformTransactionManager transactionManager;	
 	private TaskService taskService;
 	private TaskResourceFactory taskResources;
 	private List<AccountRole> roles;

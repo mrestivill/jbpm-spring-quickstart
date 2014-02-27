@@ -2,6 +2,7 @@ package com.nijhazer.jbpm.quickstart;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.jbpm.task.service.TaskService;
 import org.jbpm.task.service.TaskServiceSession;
 import org.jbpm.task.identity.UserGroupCallbackManager;
@@ -11,6 +12,8 @@ import org.slf4j.LoggerFactory;
 import com.nijhazer.jbpm.quickstart.model.AccountRole;
 import com.nijhazer.jbpm.quickstart.model.AccountUser;
 
+import org.springframework.transaction.support.AbstractPlatformTransactionManager;
+
 /**
  * Provides necessary post-instantiation configuration for the TaskService in use.
  * Intended for use by Spring.
@@ -18,11 +21,14 @@ import com.nijhazer.jbpm.quickstart.model.AccountUser;
  */
 public class TaskServiceSetup {
 	private static final Logger logger = LoggerFactory.getLogger(TaskServiceSetup.class);
+        
+        @Autowired
+        private AbstractPlatformTransactionManager transactionManager;
 	
 	private TaskService taskService;
 	private TaskResourceFactory taskResources;
 	private List<AccountRole> roles;
-	private List<AccountUser> users;
+	private List<AccountUser> users;        
 	
 	public TaskServiceSetup() {
 		
@@ -40,7 +46,7 @@ public class TaskServiceSetup {
 		 * with a callback-- an object that will be used to lookup user and group information.
 		 */
 		logger.debug("Initializing session factory");
-		//TaskResourceFactory.getTaskClient(taskService, transactionManager);
+		TaskResourceFactory.getTaskClient(taskService, transactionManager);
 		
 		logger.debug("Retrieving a callback instance");
 		LocalUserGroupCallbackImpl callback = LocalUserGroupCallbackImpl.getInstance();

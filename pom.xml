@@ -33,7 +33,7 @@
 		<version.aopalliance>1.0</version.aopalliance>
 
 		<!-- jBPM: Business Process Management -->
-		<version.jbpm>5.4.0-SNAPSHOT</version.jbpm>
+		<version.jbpm>5.4.0.Final</version.jbpm>
 
 		<!-- Drools: Rules Engine -->
 		<version.drools>5.4.0.Final</version.drools>

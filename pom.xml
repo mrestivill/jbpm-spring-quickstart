@@ -41,7 +41,7 @@
 		<!-- Drools: Third-party dependencies -->
 		<version.mvel>2.1.0.drools12</version.mvel>
 		<version.antlr>3.3</version.antlr>
-		<version.protobuf>2.4.1</version.protobuf>
+		<version.protobuf>3.16.3</version.protobuf>
 
 		<!-- Jackson: JSON Marshaling / Unmarshaling -->
 		<version.jackson>1.9.3</version.jackson>

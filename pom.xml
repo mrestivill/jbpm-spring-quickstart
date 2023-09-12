@@ -36,7 +36,7 @@
 		<version.jbpm>5.4.0.Final</version.jbpm>
 
 		<!-- Drools: Rules Engine -->
-		<version.drools>5.4.0.Final</version.drools>
+		<version.drools>7.69.0.Final</version.drools>
 
 		<!-- Drools: Third-party dependencies -->
 		<version.mvel>2.1.0.drools12</version.mvel>

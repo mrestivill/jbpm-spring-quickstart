@@ -28,7 +28,7 @@
 		<version.jstl>1.2</version.jstl>
 
 		<!-- Spring: Dependency injection and more -->
-		<version.spring>3.1.1.RELEASE</version.spring>
+		<version.spring>6.0.0</version.spring>
 		<!-- Spring: Third Party dependencies -->
 		<version.aopalliance>1.0</version.aopalliance>
 
